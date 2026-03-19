@@ -116,5 +116,7 @@ def save_order_to_sheets(order: dict, products: dict) -> bool:
         st.warning(f"⚠️ Brakuje konfiguracji w Secrets: {e}. Sprawdź plik .streamlit/secrets.toml")
         return False
     except Exception as e:
+        import traceback
         st.error(f"Błąd Google Sheets: {e}")
+        st.code(traceback.format_exc())
         return False
