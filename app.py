@@ -309,21 +309,16 @@ elif st.session_state.step == 3:
                 })
 
                 with st.spinner("Wysyłamy Twoje zamówienie..."):
+                    # Save to Google Sheets
                     sheets_ok = save_order_to_sheets(st.session_state.order, PRODUCTS)
+                    # Send emails
                     emails_ok = send_order_emails(st.session_state.order, PRODUCTS)
                 
-                st.write("Sheets:", sheets_ok)
-                st.write("Email:", emails_ok)
-                
-                if sheets_ok and emails_ok:
+                if sheets_ok or emails_ok:
                     st.session_state.step = 4
                     st.rerun()
-                elif emails_ok:
-                    st.warning("⚠️ E-maile wysłane, ale arkusz się nie zapisał. Sprawdź konfigurację Google Sheets.")
-                elif sheets_ok:
-                    st.warning("⚠️ Arkusz zapisany, ale e-maile nie zostały wysłane.")
                 else:
-                    st.error("Wystąpił błąd. Sprawdź logi.")
+                    st.error("Wystąpił błąd podczas wysyłania zamówienia. Spróbuj ponownie lub zadzwoń do cukierni.")
 
 # ══════════════════════════════════════════════════════════
 # STEP 4 – Potwierdzenie
